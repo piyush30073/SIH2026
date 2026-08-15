@@ -24,24 +24,33 @@ const userSchema = new mongoose.Schema(
 
     age: {
       type: Number,
+      required: true,
+      min: 1,
+      max: 120,
     },
 
     height: {
       type: Number,
+      required: true,
+      min: 50,
+      max: 250,
     },
 
     weight: {
       type: Number,
+      required: true,
+      min: 20,
+      max: 300,
     },
 
     fitnessGoal: {
       type: String,
       enum: [
+        "general-fitness",
         "muscle-gain",
         "fat-loss",
         "performance",
         "recovery",
-        "general-fitness",
       ],
       default: "general-fitness",
     },

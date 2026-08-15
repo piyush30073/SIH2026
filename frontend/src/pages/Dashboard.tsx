@@ -318,7 +318,7 @@ const Dashboard = () => {
 
                 <div className="mt-8 text-center">
                   <div className="text-5xl font-bold">
-                    23%
+                    00%
                   </div>
 
                   <p className="mt-2 text-sm text-emerald-400">
