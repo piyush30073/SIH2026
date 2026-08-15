@@ -7,6 +7,8 @@ import authRoutes from "./routes/auth.routes.js";
 import workoutRoutes from "./routes/workout.routes.js";
 import performanceRoutes from "./routes/performance.routes.js";
 import injuryRoutes from "./routes/injury.routes.js";
+import recoveryRoutes from "./routes/recovery.routes.js";
+import nutritionRoutes from "./routes/nutrition.routes.js";
 
 const app = express();
 
@@ -44,9 +46,7 @@ app.use(
 // ==========================================
 
 app.use(helmet());
-
 app.use(morgan("dev"));
-
 app.use(express.json());
 
 // ==========================================
@@ -65,37 +65,37 @@ app.get("/api/health", (req, res) => {
 // AUTH
 // ==========================================
 
-app.use(
-  "/api/auth",
-  authRoutes
-);
+app.use("/api/auth", authRoutes);
 
 // ==========================================
 // WORKOUTS
 // ==========================================
 
-app.use(
-  "/api/workouts",
-  workoutRoutes
-);
+app.use("/api/workouts", workoutRoutes);
 
 // ==========================================
 // PERFORMANCE
 // ==========================================
 
-app.use(
-  "/api/performance",
-  performanceRoutes
-);
+app.use("/api/performance", performanceRoutes);
 
 // ==========================================
 // INJURY PREVENTION
 // ==========================================
 
-app.use(
-  "/api/injury",
-  injuryRoutes
-);
+app.use("/api/injury", injuryRoutes);
+
+// ==========================================
+// RECOVERY
+// ==========================================
+
+app.use("/api/recovery", recoveryRoutes);
+
+// ==========================================
+// NUTRITION
+// ==========================================
+
+app.use("/api/nutrition", nutritionRoutes);
 
 // ==========================================
 // 404
@@ -115,14 +115,10 @@ app.use((req, res) => {
 // ==========================================
 
 app.use((error, req, res, next) => {
-  console.error(
-    "SERVER ERROR:",
-    error
-  );
+  console.error("SERVER ERROR:", error);
 
   if (
-    error.message ===
-    "Not allowed by CORS"
+    error.message === "Not allowed by CORS"
   ) {
     return res.status(403).json({
       success: false,

@@ -11,13 +11,17 @@ import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Performance from "./pages/Performance";
 import InjuryPrevention from "./pages/InjuryPrevention";
+import Recovery from "./pages/Recovery";
+import Nutrition from "./pages/Nutrition";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
 
-        {/* Authentication */}
+        {/* =====================================
+            AUTHENTICATION
+        ===================================== */}
 
         <Route
           path="/login"
@@ -29,7 +33,9 @@ function App() {
           element={<Register />}
         />
 
-        {/* Main application */}
+        {/* =====================================
+            MAIN APPLICATION
+        ===================================== */}
 
         <Route
           path="/dashboard"
@@ -37,8 +43,18 @@ function App() {
         />
 
         <Route
-          path="/profile"
-          element={<Profile />}
+          path="/injury-prevention"
+          element={<InjuryPrevention />}
+        />
+
+        <Route
+          path="/recovery"
+          element={<Recovery />}
+        />
+
+        <Route
+          path="/nutrition"
+          element={<Nutrition />}
         />
 
         <Route
@@ -47,11 +63,13 @@ function App() {
         />
 
         <Route
-          path="/injury-prevention"
-          element={<InjuryPrevention />}
+          path="/profile"
+          element={<Profile />}
         />
 
-        {/* Default */}
+        {/* =====================================
+            DEFAULT
+        ===================================== */}
 
         <Route
           path="/"
@@ -63,7 +81,9 @@ function App() {
           }
         />
 
-        {/* Unknown routes */}
+        {/* =====================================
+            UNKNOWN ROUTES
+        ===================================== */}
 
         <Route
           path="*"
