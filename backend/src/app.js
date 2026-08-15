@@ -1,4 +1,5 @@
 import express from "express";
+import authRoutes from "./routes/auth.routes.js";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -37,4 +38,6 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+
+app.use("/api/auth", authRoutes);
 export default app;
