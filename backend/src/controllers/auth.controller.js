@@ -2,10 +2,14 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
+// ==========================================
+// GENERATE JWT
+// ==========================================
+
 const generateToken = (userId) => {
   return jwt.sign(
     {
-      id: userId,
+      userId: userId.toString(),
     },
     process.env.JWT_SECRET,
     {
@@ -30,10 +34,7 @@ export const register = async (req, res) => {
       fitnessGoal,
     } = req.body;
 
-    // -----------------------------
-    // Validate required fields
-    // -----------------------------
-
+    // Required fields
     if (
       !name ||
       !email ||
@@ -48,29 +49,21 @@ export const register = async (req, res) => {
       });
     }
 
-    // -----------------------------
-    // Validate password
-    // -----------------------------
-
+    // Password validation
     if (password.length < 6) {
       return res.status(400).json({
         success: false,
-        message: "Password must be at least 6 characters",
+        message:
+          "Password must be at least 6 characters",
       });
     }
 
-    // -----------------------------
     // Normalize email
-    // -----------------------------
-
     const normalizedEmail = email
       .trim()
       .toLowerCase();
 
-    // -----------------------------
-    // Check existing user
-    // -----------------------------
-
+    // Check existing account
     const existingUser = await User.findOne({
       email: normalizedEmail,
     });
@@ -78,14 +71,12 @@ export const register = async (req, res) => {
     if (existingUser) {
       return res.status(409).json({
         success: false,
-        message: "An account with this email already exists",
+        message:
+          "An account with this email already exists",
       });
     }
 
-    // -----------------------------
-    // Validate numbers
-    // -----------------------------
-
+    // Convert numeric values
     const numericAge = Number(age);
     const numericHeight = Number(height);
     const numericWeight = Number(weight);
@@ -97,23 +88,18 @@ export const register = async (req, res) => {
     ) {
       return res.status(400).json({
         success: false,
-        message: "Age, height and weight must be valid numbers",
+        message:
+          "Age, height and weight must be valid numbers",
       });
     }
 
-    // -----------------------------
     // Hash password
-    // -----------------------------
-
     const hashedPassword = await bcrypt.hash(
       password,
       12
     );
 
-    // -----------------------------
     // Create user
-    // -----------------------------
-
     const user = await User.create({
       name: name.trim(),
       email: normalizedEmail,
@@ -125,19 +111,13 @@ export const register = async (req, res) => {
         fitnessGoal || "general-fitness",
     });
 
-    // -----------------------------
     // Generate JWT
-    // -----------------------------
-
     const token = generateToken(user._id);
-
-    // -----------------------------
-    // Response
-    // -----------------------------
 
     return res.status(201).json({
       success: true,
       message: "Account created successfully",
+
       token,
 
       user: {
@@ -151,11 +131,15 @@ export const register = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("REGISTER ERROR:", error);
+    console.error(
+      "REGISTER ERROR:",
+      error
+    );
 
     return res.status(500).json({
       success: false,
-      message: "Server error during registration",
+      message:
+        "Server error during registration",
     });
   }
 };
@@ -166,19 +150,26 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const {
+      email,
+      password,
+    } = req.body;
 
+    // Validate fields
     if (!email || !password) {
       return res.status(400).json({
         success: false,
-        message: "Email and password are required",
+        message:
+          "Email and password are required",
       });
     }
 
+    // Normalize email
     const normalizedEmail = email
       .trim()
       .toLowerCase();
 
+    // Find user
     const user = await User.findOne({
       email: normalizedEmail,
     });
@@ -186,27 +177,35 @@ export const login = async (req, res) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: "Invalid email or password",
+        message:
+          "Invalid email or password",
       });
     }
 
-    const passwordMatch = await bcrypt.compare(
-      password,
-      user.password
-    );
+    // Compare password
+    const passwordMatch =
+      await bcrypt.compare(
+        password,
+        user.password
+      );
 
     if (!passwordMatch) {
       return res.status(401).json({
         success: false,
-        message: "Invalid email or password",
+        message:
+          "Invalid email or password",
       });
     }
 
-    const token = generateToken(user._id);
+    // Generate JWT
+    const token = generateToken(
+      user._id
+    );
 
     return res.status(200).json({
       success: true,
       message: "Login successful",
+
       token,
 
       user: {
@@ -220,11 +219,15 @@ export const login = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("LOGIN ERROR:", error);
+    console.error(
+      "LOGIN ERROR:",
+      error
+    );
 
     return res.status(500).json({
       success: false,
-      message: "Server error during login",
+      message:
+        "Server error during login",
     });
   }
 };
