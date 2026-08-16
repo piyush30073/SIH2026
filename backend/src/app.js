@@ -65,37 +65,55 @@ app.get("/api/health", (req, res) => {
 // AUTH
 // ==========================================
 
-app.use("/api/auth", authRoutes);
+app.use(
+  "/api/auth",
+  authRoutes
+);
 
 // ==========================================
 // WORKOUTS
 // ==========================================
 
-app.use("/api/workouts", workoutRoutes);
+app.use(
+  "/api/workouts",
+  workoutRoutes
+);
 
 // ==========================================
 // PERFORMANCE
 // ==========================================
 
-app.use("/api/performance", performanceRoutes);
+app.use(
+  "/api/performance",
+  performanceRoutes
+);
 
 // ==========================================
 // INJURY PREVENTION
 // ==========================================
 
-app.use("/api/injury", injuryRoutes);
+app.use(
+  "/api/injury",
+  injuryRoutes
+);
 
 // ==========================================
 // RECOVERY
 // ==========================================
 
-app.use("/api/recovery", recoveryRoutes);
+app.use(
+  "/api/recovery",
+  recoveryRoutes
+);
 
 // ==========================================
 // NUTRITION
 // ==========================================
 
-app.use("/api/nutrition", nutritionRoutes);
+app.use(
+  "/api/nutrition",
+  nutritionRoutes
+);
 
 // ==========================================
 // 404
@@ -115,20 +133,26 @@ app.use((req, res) => {
 // ==========================================
 
 app.use((error, req, res, next) => {
-  console.error("SERVER ERROR:", error);
+  console.error(
+    "SERVER ERROR:",
+    error
+  );
 
   if (
-    error.message === "Not allowed by CORS"
+    error.message ===
+    "Not allowed by CORS"
   ) {
     return res.status(403).json({
       success: false,
-      message: "CORS origin not allowed",
+      message:
+        "CORS origin not allowed",
     });
   }
 
   return res.status(500).json({
     success: false,
-    message: "Internal server error",
+    message:
+      "Internal server error",
   });
 });
 
